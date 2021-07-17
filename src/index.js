@@ -1,10 +1,10 @@
-import './css/styles.css';
-import './css/notiflix-2.7.0.min.css';
+import "./css/styles.css";
+import debounce from "lodash/debounce";
+import Notiflix from "notiflix";
 import { fetchCountries } from './js/fetchCountries.js';
 import countryMarkup from './templates/country.hbs';
 import counriesMarkup from './templates/countries.hbs';
-import debounce from 'lodash/debounce'; 
-import Notiflix from "notiflix";
+
 
 Notiflix.Notify.init({ width: "400px", position: "right-bottom", fontSize: "17px", });
 
