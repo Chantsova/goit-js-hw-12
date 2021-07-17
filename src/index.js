@@ -1,30 +1,37 @@
 import './css/styles.css';
-import fetchCountries from './js/fetchCountries.js';
+import './css/notiflix-2.7.0.min.css';
+import { fetchCountries } from './js/fetchCountries.js';
 import countryMarkup from './templates/country.hbs';
 import counriesMarkup from './templates/countries.hbs';
+import debounce from 'lodash/debounce'; 
+import Notiflix from "notiflix";
 
-const DEBOUNCE_DELAY = 300;
-const debounce = require('lodash.debounce');
+Notiflix.Notify.init({ width: "400px", position: "right-bottom", fontSize: "17px", });
 
+const DEBOUNCE_DELAY = 800;
 const refs = {
   inputEl: document.querySelector('#search-box'),
   countryListEl: document.querySelector('.country-list'),
   countryContentEl: document.querySelector('.country-info'),
-  languagesList: document.querySelector('.country_languages')
+  languagesListEl: document.querySelector('.country_languages')
 };
 
 refs.inputEl.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 
 function onSearch(e) {
   const value = e.target.value;
+
+  refs.countryContentEl.innerHTML = '';
+  refs.countryListEl.innerHTML = '';
+
+  if (value.trim('') === '') {
+    return;
+  }
  
   fetchCountries(value)
     .then(countries => {
-      refs.countryContentEl.innerHTML = '';
-      refs.countryListEl.innerHTML = '';
-
       if (countries.length > 10) {
-        console.log('aaaa');
+        Notiflix.Notify.info('Too many matches found. Please enter a more specific name.')
       }
       if (countries.length === 1) {
         fullDescriptionCountry(countries[0]);
@@ -33,23 +40,19 @@ function onSearch(e) {
         shortListCountries(countries);
       }
     })
-          
-    .catch(error => console.log(error))
+  .catch(err => console.log("Error404"))
 }
  
 function fullDescriptionCountry(...countries) {
-  const markup = countryMarkup(...countries);
-  console.log(...countries)
-  //const countryLanguages = `<li>${languages.name}</li>`
-  //refs.languagesList.insertAdjacentHTML('beforeend', countryLanguages)
-  return refs.countryContentEl.innerHTML = markup;  
+  const markup = countryMarkup(countries[0]);
+  const countryLanguage = countries[0].languages;
+  const languagesList = (countryLanguage.map(language => language.name).join(', '));
+  const languagesMarkup = `<p class="country_detail">Languages: ${languagesList} </p>`;
+  refs.countryContentEl.insertAdjacentHTML('afterbegin', languagesMarkup);
+  refs.countryContentEl.insertAdjacentHTML('afterbegin', markup);
 }
   
 function shortListCountries(countries) {
-  
   const markup = counriesMarkup(countries);
-  return refs.countryListEl.innerHTML = markup;
+  refs.countryListEl.insertAdjacentHTML('afterbegin', markup);
 }
-
-
-//const languages = (`${languages}`).map(languages => language.name).join(', ')
