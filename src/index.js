@@ -6,7 +6,7 @@ import countryMarkup from './templates/country.hbs';
 import counriesMarkup from './templates/countries.hbs';
 
 
-Notiflix.Notify.init({ width: "400px", position: "right-bottom", fontSize: "17px", });
+Notiflix.Notify.init({ width: "400px", position: "right-top", fontSize: "17px", });
 
 const DEBOUNCE_DELAY = 800;
 const refs = {
