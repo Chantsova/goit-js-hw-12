@@ -20,7 +20,6 @@ refs.inputEl.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 
 function onSearch(e) {
   const value = e.target.value;
-
   refs.countryContentEl.innerHTML = '';
   refs.countryListEl.innerHTML = '';
 
@@ -31,7 +30,7 @@ function onSearch(e) {
   fetchCountries(value)
     .then(countries => {
       if (countries.length > 10) {
-        Notiflix.Notify.info('Too many matches found. Please enter a more specific name.')
+        Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
       }
       if (countries.length === 1) {
         fullDescriptionCountry(countries[0]);
