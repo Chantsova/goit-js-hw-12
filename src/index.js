@@ -1,12 +1,12 @@
 import "./css/styles.css";
-//import debounce from "lodash/debounce";
+import debounce from "lodash/debounce";
 import Notiflix from "notiflix";
 import { fetchCountries } from './js/fetchCountries.js';
 import countryMarkup from './templates/country.hbs';
 import counriesMarkup from './templates/countries.hbs';
 
 
-//Notiflix.Notify.init({ width: "400px", position: "right-top", fontSize: "17px", });
+Notiflix.Notify.init({ width: "400px", position: "right-top", fontSize: "17px", });
 
 const DEBOUNCE_DELAY = 800;
 const refs = {
@@ -16,8 +16,8 @@ const refs = {
   languagesListEl: document.querySelector('.country_languages')
 };
 
-//refs.inputEl.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
-refs.inputEl.addEventListener('input', onSearch);
+refs.inputEl.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
+
 function onSearch(e) {
   const value = e.target.value;
   refs.countryContentEl.innerHTML = '';
@@ -30,8 +30,7 @@ function onSearch(e) {
   fetchCountries(value)
     .then(countries => {
       if (countries.length > 10) {
-        console.log("MNOGO")
-        //Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
+        Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
       }
       if (countries.length === 1) {
         fullDescriptionCountry(countries[0]);

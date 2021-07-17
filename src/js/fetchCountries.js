@@ -1,4 +1,4 @@
-//import Notiflix from "notiflix";
+import Notiflix from "notiflix";
 
 function fetchCountries(name) {
   return fetch(`https://restcountries.eu/rest/v2/name/${name}`)
@@ -7,8 +7,7 @@ function fetchCountries(name) {
         return response.json();
       }
       if (response.ok === false) {
-        //throw new Error(Notiflix.Notify.failure("Oops, there is no country with that name!"));
-      throw new Error(console.log("WHY"));
+        throw new Error(Notiflix.Notify.failure("Oops, there is no country with that name!"));
       }
     })
 }
